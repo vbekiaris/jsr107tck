@@ -23,6 +23,7 @@
         <module>spring-annotations-test-harness</module>
         <module>guice-annotations-test-harness</module>
         <module>cdi-weld-annotations-test-harness</module>
+        <module>sigtest</module>
     </modules>
 
     <!-- Common Properties -->
@@ -209,13 +210,7 @@
 
                 <!--################################################################################################################-->
             </properties>
-
-
-
-
         </profile>
-
-
     </profiles>
 
     <licenses>

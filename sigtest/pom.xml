@@ -1,0 +1,104 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>javax.cache</groupId>
+        <artifactId>tck-parent</artifactId>
+        <version>1.1.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>javax.cache</groupId>
+    <artifactId>sigtest</artifactId>
+
+    <packaging>pom</packaging>
+
+    <name>API signature tests</name>
+    <url>https://github.com/jsr107/jsr107tck</url>
+    <description>
+        Verify API compatibility using sigtest (https://wiki.openjdk.java.net/display/CodeTools/sigtest).
+    </description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <profiles>
+        <!-- Verify current API signature against 1.0.0 -->
+        <profile>
+            <id>sigtest-1.0.0</id>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>sigtest-3.1-plugin-local</id>
+                    <name></name>
+                    <url>file://${project.basedir}/plugin-repository/</url>
+                </pluginRepository>
+            </pluginRepositories>
+            <dependencies>
+                <dependency>
+                    <groupId>javax.cache</groupId>
+                    <artifactId>cache-api</artifactId>
+                    <version>${jcache.version}</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>2.8</version>
+                        <executions>
+                            <execution>
+                                <id>copy-current-cache-api</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>javax.cache</groupId>
+                                            <artifactId>cache-api</artifactId>
+                                            <version>${project.parent.version}</version>
+                                            <outputDirectory>${project.build.directory}</outputDirectory>
+                                            <destFileName>cache-api-current.jar</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.sun.tdk</groupId>
+                        <artifactId>sigtest-plugin</artifactId>
+                        <version>3.1</version>
+                        <executions>
+                            <execution>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <fileName>${project.basedir}/api-signatures/jcache_1.0.0.sig</fileName>
+                            <packages>
+                                <package>javax.cache</package>
+                            </packages>
+                            <backward>true</backward>
+                            <pathElements>
+                                <!-- location of runtime library may differ -->
+                                <!-- for example in Apple JDK 6 it's $JAVA_HOME/bundle/Classes/classes.jar -->
+                                <pathElement>${java.home}/lib/rt.jar</pathElement>
+                                <pathElement>${project.build.directory}/cache-api-current.jar</pathElement>
+                            </pathElements>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
