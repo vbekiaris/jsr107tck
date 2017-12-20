@@ -198,14 +198,14 @@
                 <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
 
                 <!--Change the following properties on the command line to override with the coordinates for your implementation-->
-                <implementation-groupId>org.jsr107.ri</implementation-groupId>
-                <implementation-artifactId>cache-ri-impl</implementation-artifactId>
-                <implementation-version>1.1.0</implementation-version>
+                <implementation-groupId>com.hazelcast</implementation-groupId>
+                <implementation-artifactId>hazelcast-client</implementation-artifactId>
+                <implementation-version>3.10-SNAPSHOT</implementation-version>
 
                 <!-- Change the following properties to your CacheManager and Cache implementation. Used by the unwrap tests. -->
-                <CacheManagerImpl>org.jsr107.ri.RICacheManager</CacheManagerImpl>
-                <CacheImpl>org.jsr107.ri.RICache</CacheImpl>
-                <CacheEntryImpl>org.jsr107.ri.RIEntry</CacheEntryImpl>
+                <CacheManagerImpl>com.hazelcast.client.cache.impl.HazelcastClientCacheManager</CacheManagerImpl>
+                <CacheImpl>com.hazelcast.cache.ICache</CacheImpl>
+                <CacheEntryImpl>com.hazelcast.cache.impl.CacheEntry</CacheEntryImpl>
 
                 <!--################################################################################################################-->
             </properties>
